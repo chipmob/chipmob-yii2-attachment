@@ -1,0 +1,46 @@
+{
+  "name": "chipmob/yii2-attachment",
+  "description": "Extension for file uploading and attaching to the models",
+  "keywords": ["yii2", "yii2-attachment", "attachment", "file", "upload", "chipmob"],
+  "type": "yii2-extension",
+  "license": "MIT",
+  "support": {
+    "issues": "https://github.com/chipmob/yii2-attachment/issues?state=open",
+    "source": "https://github.com/chipmob/yii2-attachment"
+  },
+  "authors": [
+    {
+      "name": "chipmob",
+      "email": "chipmob@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=7.4",
+    "ext-imagick": "*",
+    "yiisoft/yii2": "~2.0",
+    "yiisoft/yii2-bootstrap4": "~2.0",
+    "kartik-v/yii2-widget-fileinput": "~1.0",
+    "bower-asset/jquery-colorbox": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "chipmob\\attachment\\": ""
+    }
+  },
+  "extra": {
+    "bootstrap": "chipmob\\attachment\\Bootstrap"
+  },
+  "config": {
+    "process-timeout": 1800,
+    "fxp-asset": {
+      "enabled": false
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ]
+}
