@@ -6,8 +6,6 @@ use chipmob\attachment\components\traits\FilePreviewTrait;
 use chipmob\attachment\components\traits\ModuleTrait;
 use chipmob\attachment\models\File;
 use Exception;
-use Imagick;
-use ImagickException;
 use ReflectionClass;
 use Yii;
 use yii\base\Behavior;
@@ -125,7 +123,7 @@ class FileBehavior extends Behavior
                 if (!$file->saveAs($userTempDir . $file->name)) {
                     throw new Exception(Yii::t('yii', 'File upload failed.'));
                 }
-                $this->stripExif($userTempDir . $file->name);
+                $this->stripExifGD($userTempDir . $file->name);
             }
         }
 
@@ -169,16 +167,20 @@ class FileBehavior extends Behavior
         return $this->_cache->getOrSet(['First_File', $this->owner->formName()], fn() => $this->fileQuery()->one());
     }
 
-    protected function stripExif(string $path)
+    protected function stripExifGD(string $path)
     {
-        if (in_array(FileHelper::getMimeType($path), ['image/jpeg', 'image/png', 'image/gif', 'image/bmp']) && class_exists("Imagick")) {
-            try {
-                $iMagick = new Imagick($path);
-                $iMagick->stripImage();
-                $iMagick->writeImage($path);
-                $iMagick->clear();
-                $iMagick->destroy();
-            } catch (ImagickException $e) {}
+        $mime = FileHelper::getMimeType($path);
+        switch ($mime) {
+            case 'image/jpeg':
+                $image = imagecreatefromjpeg($path);
+                imagejpeg($image, $path, 90);
+                imagedestroy($image);
+                break;
+            case 'image/png':
+                $image = imagecreatefrompng($path);
+                imagepng($image, $path, 9);
+                imagedestroy($image);
+                break;
         }
     }
 }
