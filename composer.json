@@ -28,9 +28,6 @@
       "chipmob\\attachment\\": ""
     }
   },
-  "extra": {
-    "bootstrap": "chipmob\\attachment\\Bootstrap"
-  },
   "config": {
     "process-timeout": 1800,
     "fxp-asset": {

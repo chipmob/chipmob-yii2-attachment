@@ -4,6 +4,7 @@ namespace chipmob\attachment;
 
 use chipmob\attachment\models\File;
 use Yii;
+use yii\base\BootstrapInterface;
 use yii\base\Exception;
 use yii\db\ActiveRecord;
 use yii\helpers\FileHelper;
@@ -16,7 +17,7 @@ use yii\helpers\FileHelper;
  * @property string $urlRules
  * @property string $uploadPath
  */
-class Module extends \yii\base\Module
+class Module extends \yii\base\Module implements BootstrapInterface
 {
     /** @inheritdoc */
     public $controllerNamespace = 'chipmob\attachment\controllers';
@@ -119,5 +120,19 @@ class Module extends \yii\base\Module
         if (empty($file)) return false;
 
         return file_exists($file->getPath()) ? unlink($file->getPath()) && (bool)$file->delete() : (bool)$file->delete();
+    }
+
+    /** @inheritdoc */
+    public function bootstrap($app)
+    {
+        Yii::setAlias('@attachment', __DIR__);
+        if ($app instanceof \yii\console\Application) {
+            $app->controllerMap['migrate']['migrationPath'][] = '@attachment/migrations';
+        }
+        $app->i18n->translations['attachment*'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'basePath' => '@attachment/messages',
+            'sourceLanguage' => 'en-US',
+        ];
     }
 }
