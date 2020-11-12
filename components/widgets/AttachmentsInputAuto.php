@@ -99,6 +99,7 @@ JS;
             'options' => $this->options,
             'pluginOptions' => $this->pluginOptions,
             'sortThumbs' => false,
+            'showMessage' => false,
         ]);
 
         return Html::tag('div', $fileInput, ['class' => 'form-group']);
