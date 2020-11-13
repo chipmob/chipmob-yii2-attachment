@@ -40,6 +40,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         parent::init();
 
+        if (php_sapi_name() === 'cli') return;
+
         if (empty($this->storePath) || empty($this->tempPath)) {
             throw new Exception('Setup {storePath} and {tempPath} in module properties');
         }
